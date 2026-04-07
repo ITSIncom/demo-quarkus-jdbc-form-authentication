@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #f3f4f6; min-height: 100vh; }
+        nav { background: #1e293b; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: #93c5fd; text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.1); padding: 2rem; }
+        h1 { margin-bottom: 1rem; }
+        .badge { display: inline-block; background: #dbeafe; color: #1e40af; padding: .25rem .75rem; border-radius: 9999px; font-size: .875rem; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <nav>
+        <strong>Quarkus Auth Demo</strong>
+        <a href="/logout">Logout</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h1>Welcome, {username}!</h1>
+            <p>You are logged in with role: <span class="badge">{role}</span></p>
+            <p style="margin-top:1rem; color:#6b7280;">This is a protected page. Only authenticated users can see this.</p>
+        </div>
+    </div>
+</body>
+</html>
