@@ -11,6 +11,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
+
+import java.security.Principal;
 
 @Path("/app")
 @DenyAll
@@ -26,9 +29,9 @@ public class ProtectedResource {
     @Path("/dashboard")
     @Produces(MediaType.TEXT_HTML)
     @RolesAllowed("admin")
-    public TemplateInstance dashboard(@Context SecurityIdentity identity) {
-        String username = identity.getPrincipal().getName();
-        String role = identity.getRoles().stream().findFirst().orElse("user");
-        return Templates.dashboard(username, role);
+    public TemplateInstance dashboard(@Context SecurityContext securityContext) {
+        Principal principal = securityContext.getUserPrincipal();
+        String username = principal.getName();
+        return Templates.dashboard(username, "admin");
     }
 }
