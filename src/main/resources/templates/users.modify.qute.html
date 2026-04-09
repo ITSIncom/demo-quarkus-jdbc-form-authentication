@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modify User</title>
+</head>
+<body>
+<form action="/app/users/modify/{user.username}" method="post">
+    <label for="username">Username:&nbsp;
+        <input type="text" id="username" name="username" value="{user.username}" required>
+    </label>
+    <br>
+    <label for="role">Role:&nbsp;
+        <select id="role" name="role" required>
+            <option value="admin" {#if user.role == 'admin'}selected{/if}>Admin</option>
+            <option value="user" {#if user.role == 'user'}selected{/if}>User</option>
+        </select>
+    </label>
+    <br>
+    <button type="submit">Save</button>
+    <button type="reset">Reset</button>
+</form>
+{#if errorMessage}
+    <p style="color: red">${errorMessage}</p>
+{/if}
+</body>
+</html>
