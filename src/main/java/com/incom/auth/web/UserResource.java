@@ -1,6 +1,6 @@
 package com.incom.auth.web;
 
-import com.incom.auth.persistence.model.User;
+import com.incom.auth.persistence.entity.User;
 import com.incom.auth.service.UserService;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;

@@ -63,10 +63,21 @@
         </dependency>
 
         <!-- FluentJDBC -->
-        <dependency>
+        <!--dependency>
             <groupId>io.quarkiverse.fluentjdbc</groupId>
             <artifactId>quarkus-fluentjdbc</artifactId>
             <version>${fluentjdbc.version}</version>
+        </dependency-->
+
+        <!-- Hibernate ORM with Panache -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm</artifactId>
         </dependency>
 
         <!-- Arc (CDI) -->

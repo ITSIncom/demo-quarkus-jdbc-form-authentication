@@ -1,12 +1,11 @@
 package com.incom.auth.service;
 
-import com.incom.auth.persistence.model.User;
+import com.incom.auth.persistence.entity.User;
 import com.incom.auth.persistence.repository.UserRepository;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public RegistrationResult register(String username, String password, String confirmPassword) {
         if (username == null || username.isBlank()) {
             return RegistrationResult.error("Username is required.");
@@ -36,12 +36,18 @@ public class UserService {
         }
 
         String hashed = BcryptUtil.bcryptHash(password);
-        userRepository.create(trimmed, hashed, "user");
+
+        User u = new User();
+        u.setUsername(trimmed);
+        u.setRole("user");
+        u.setPasswordHash(hashed);
+
+        userRepository.persist(u);
         return RegistrationResult.success();
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.listAll();
     }
 
     public User getByUsername(String username) {
@@ -53,6 +59,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public Optional<String> modifyUser(String oldUsername, String newUsername, String newRole) {
         if (oldUsername == null || oldUsername.isBlank()) {
             return Optional.of("Username is required");
@@ -64,15 +71,20 @@ public class UserService {
         if (!"user".equals(newRole) && !"admin".equals(newRole)) {
             return Optional.of("Role must be either user or admin");
         }
-        if (!(userRepository.existsByUsername(oldUsername))) {
+        Optional<User> oldByUsername = userRepository.findByUsername(newUsername);
+        if (oldByUsername.isEmpty()) {
             return Optional.of("User does not exist");
         }
+
         if (!oldUsername.equals(newUsername)) {
             if (userRepository.existsByUsername(newUsername)) {
                 return Optional.of("Username already exists");
             }
         }
-        userRepository.updateUser(oldUsername, newUsername, newRole);
+
+        User user = oldByUsername.get();
+        user.setUsername(newUsername);
+        user.setRole(newRole);
         return Optional.empty();
     }
 
